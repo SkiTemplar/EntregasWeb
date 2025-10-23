@@ -1,0 +1,37 @@
+/* Estilos generales de la aplicación */
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Estilos para el logo con holograma */
+.logo-container {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  height: 50px;
+  filter: brightness(0) invert(1);
+}
+
+.main-container {
+  width: 100%;
+  max-width: 700px;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+}
+
+.main-container h1 {
+  text-align: center;
+  color: #667eea;
+  margin-bottom: 30px;
+  font-size: 28px;
+}

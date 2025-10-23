@@ -1,0 +1,36 @@
+.todo-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+}
+
+.todo-container.completed {
+  background: #f0fdf4;
+  opacity: 0.7;
+}
+
+.todo-container.completed .todo-text {
+  text-decoration: line-through;
+  color: #6b7280;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 15px;
+  color: #2d3748;
+}
+
+.todo-icon-container {
+  color: #ef4444;
+  font-size: 20px;
+}
+
+.todo-icon-container:hover {
+  color: #dc2626;
+}
