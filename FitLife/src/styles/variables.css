@@ -1,0 +1,43 @@
+
+:root {
+    /* --- Core Brand Colors --- */
+    --primary-color: #00E5FF;
+    --secondary-color: #00BFD4;
+    --accent-color: #18FFFF;
+    --error-color: #FF1744;
+
+    /* --- Backgrounds --- */
+    --bg-primary: #0B0D0F;
+    --bg-secondary: #1A1F24;
+    --bg-gradient-start: #0B0D0F;
+    --bg-gradient-end: #1A1F24;
+
+    /* --- Text --- */
+    --text-primary: #E6F7FF;
+    --text-secondary: #8AA3B0;
+    --text-light: #FFFFFF;
+
+    /* --- UI & Structure --- */
+    --border-color: #1F2A33;
+    --shadow: rgba(0, 229, 255, 0.12);
+}
+
+[data-theme="light"] {
+    /* --- Adaptación para fondo claro --- */
+    --bg-primary: #F8FBFD;
+    --bg-secondary: #E9F2F5;
+    --bg-gradient-start: #DFF7FF;
+    --bg-gradient-end: #C8EFFF;
+
+    --text-primary: #0B0D0F;
+    --text-secondary: #33414A;
+
+    --border-color: #B6D8E0;
+    --shadow: rgba(0, 229, 255, 0.08);
+
+    --primary-color: #009EC0;
+    --secondary-color: #007A99;
+    --accent-color: #00CFFF;
+}
+
+

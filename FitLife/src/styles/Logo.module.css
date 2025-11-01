@@ -1,0 +1,24 @@
+/* Logo.module.css - Estilos para el componente Logo */
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 30px var(--shadow);
+  border: 2px solid var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px var(--primary-color);
+}
+
+.logoImg {
+  height: 80px;
+  width: auto;
+  filter: drop-shadow(0 0 10px var(--primary-color));
+}
