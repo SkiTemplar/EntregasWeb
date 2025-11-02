@@ -18,19 +18,24 @@ const STEPS = [
 function FormContainer(){
     const[currentStepIndex, setCurrentStepIndex] = useState(0);
     const [formData, setFormData] = useState({nameContact: {}, address: {}, training: {}, payment: {}});
+    const [submitCurrentStep, setSubmitCurrentStep] = useState(null);
 
-    const [canNext, setCanNext] = useState(true);
+    const [canNext, setCanNext] = useState(false);
 
     const totalSteps = STEPS.length;
     const {key, Comp} = STEPS[currentStepIndex];
 
     const enterStep = (n) => {
         setCurrentStepIndex(n);
-        setCanNext(true);
+        setCanNext(false);
+    }
+
+    const proceedNext = () => {
+        if (currentStepIndex < totalSteps - 1) enterStep(currentStepIndex + 1);
     }
 
     const onNext = () => {
-        if (currentStepIndex < totalSteps - 1 && canNext) enterStep(currentStepIndex + 1)
+        if(submitCurrentStep) submitCurrentStep();
     }
 
     const onBack = () => {
@@ -44,16 +49,18 @@ function FormContainer(){
         }))
     }
 
+
     const initialData = formData[key] || {};
 
     return (
         <>
             <Comp
-                onNext={onNext}
-                onBack={onBack}
                 initialData={initialData}
                 setCanNext={setCanNext}
                 setStepData={(data) => setStepData(key, data)}
+                setSubmitCurrentStep={setSubmitCurrentStep}
+                proceedNext={proceedNext}
+                onBack={onBack}
             />
 
             {currentStepIndex < totalSteps - 1 && (
