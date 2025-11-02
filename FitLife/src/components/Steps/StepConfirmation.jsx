@@ -24,7 +24,7 @@ function StepConfirmation({ formData, onBack }) {
             <div className="confirmation-sections">
                 {/* Resumen de Datos Personales */}
                 <section className="confirmation-section">
-                    <h3 className="section-title">📋 Datos Personales</h3>
+                    <h3 className="section-title">Datos Personales</h3>
                     <div className="section-content">
                         <p><strong>Nombre:</strong> {nameContact.name}</p>
                         <p><strong>Email:</strong> {nameContact.email}</p>
@@ -34,7 +34,7 @@ function StepConfirmation({ formData, onBack }) {
 
                 {/* Resumen de Dirección */}
                 <section className="confirmation-section">
-                    <h3 className="section-title">📍 Dirección</h3>
+                    <h3 className="section-title">Dirección</h3>
                     <div className="section-content">
                         <p><strong>Dirección:</strong> {address.address}</p>
                         <p><strong>Ciudad:</strong> {address.city}</p>
@@ -44,7 +44,7 @@ function StepConfirmation({ formData, onBack }) {
 
                 {/* Resumen de Preferencias de Entrenamiento */}
                 <section className="confirmation-section">
-                    <h3 className="section-title">💪 Preferencias de Entrenamiento</h3>
+                    <h3 className="section-title">Preferencias de Entrenamiento</h3>
                     <div className="section-content">
                         <p><strong>Tipo de Entrenamiento:</strong> {training.trainingType}</p>
                         <p><strong>Objetivo:</strong> {training.goal}</p>
@@ -54,7 +54,7 @@ function StepConfirmation({ formData, onBack }) {
 
                 {/* Resumen de Pago */}
                 <section className="confirmation-section">
-                    <h3 className="section-title">💳 Información de Pago</h3>
+                    <h3 className="section-title">Información de Pago</h3>
                     <div className="section-content">
                         <p><strong>Plan:</strong> {payment.plan === 'monthly' ? 'Mensual - 29.99€/mes' : 'Anual - 299.99€/año'}</p>
                         <p><strong>Tarjeta:</strong> **** **** **** {payment.cardNumber?.slice(-4)}</p>
