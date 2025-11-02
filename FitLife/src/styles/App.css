@@ -1,0 +1,378 @@
+/* Variables de color globales */
+:root {
+  /* Colores modo claro */
+  --bg-primary-light: #ffffff;
+  --bg-secondary-light: #f8f9fa;
+  --text-primary-light: #212529;
+  --text-secondary-light: #6c757d;
+  --accent-light: #007bff;
+  --accent-hover-light: #0056b3;
+  --border-light: #dee2e6;
+  --error-light: #dc3545;
+  --success-light: #28a745;
+  --input-bg-light: #ffffff;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+
+  /* Colores modo oscuro */
+  --bg-primary-dark: #1a1a1a;
+  --bg-secondary-dark: #2d2d2d;
+  --text-primary-dark: #e0e0e0;
+  --text-secondary-dark: #a0a0a0;
+  --accent-dark: #4a9eff;
+  --accent-hover-dark: #6bb0ff;
+  --border-dark: #404040;
+  --error-dark: #ff4d5a;
+  --success-dark: #4caf50;
+  --input-bg-dark: #2d2d2d;
+  --shadow-dark: rgba(0, 0, 0, 0.3);
+}
+
+/* Tema claro */
+.light-theme {
+  --bg-primary: var(--bg-primary-light);
+  --bg-secondary: var(--bg-secondary-light);
+  --text-primary: var(--text-primary-light);
+  --text-secondary: var(--text-secondary-light);
+  --accent: var(--accent-light);
+  --accent-hover: var(--accent-hover-light);
+  --border: var(--border-light);
+  --error: var(--error-light);
+  --success: var(--success-light);
+  --input-bg: var(--input-bg-light);
+  --shadow: var(--shadow-light);
+}
+
+/* Tema oscuro */
+.dark-theme {
+  --bg-primary: var(--bg-primary-dark);
+  --bg-secondary: var(--bg-secondary-dark);
+  --text-primary: var(--text-primary-dark);
+  --text-secondary: var(--text-secondary-dark);
+  --accent: var(--accent-dark);
+  --accent-hover: var(--accent-hover-dark);
+  --border: var(--border-dark);
+  --error: var(--error-dark);
+  --success: var(--success-dark);
+  --input-bg: var(--input-bg-dark);
+  --shadow: var(--shadow-dark);
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+/* Contenedor principal de la app */
+.app-container {
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+  padding: 2rem;
+}
+
+/* Header de la app con logo y botón de tema */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+/* Botón de cambio de tema */
+.theme-toggle {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.theme-toggle:hover {
+  background: var(--accent-hover);
+  transform: scale(1.1);
+}
+
+/* Contenedor principal del contenido */
+.app-main {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-image {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent);
+  margin: 0;
+}
+
+/* Contenedor del formulario */
+.form-container {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.form-content {
+  margin-bottom: 2rem;
+}
+
+/* Título de cada paso */
+.step-title {
+  color: var(--accent);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Formulario de cada paso */
+.step-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Grupo de campos del formulario */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Etiquetas del formulario */
+.form-label {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Inputs del formulario */
+.form-input,
+.form-select {
+  padding: 0.75rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+}
+
+/* Input con error */
+.form-input.error,
+.form-select.error {
+  border-color: var(--error);
+}
+
+/* Mensaje de error */
+.error-message {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin-top: -0.25rem;
+}
+
+/* Navegación */
+.navigation-container {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border);
+}
+
+/* Indicador de progreso */
+.progress-indicator {
+  margin-bottom: 1.5rem;
+}
+
+.step-counter {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Barra de progreso */
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  transition: width 0.4s ease;
+  border-radius: 10px;
+}
+
+/* Botones de navegación */
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-back,
+.btn-next,
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back,
+.btn-secondary {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+}
+
+.btn-back:hover,
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+.btn-next,
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  flex: 1;
+}
+
+.btn-next:hover,
+.btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.btn-next:disabled,
+.btn-back:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Confirmación */
+.confirmation-container {
+  padding: 1rem;
+}
+
+.confirmation-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.confirmation-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.confirmation-section {
+  background: var(--bg-primary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.section-title {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-content p {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.section-content strong {
+  color: var(--text-secondary);
+  margin-right: 0.5rem;
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.confirmation-buttons button {
+  min-width: 180px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .navigation-buttons,
+  .confirmation-buttons {
+    flex-direction: column;
+  }
+
+  .logo-title {
+    font-size: 1.5rem;
+  }
+
+  .logo-image {
+    height: 40px;
+  }
+}
+

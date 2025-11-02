@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import {FaSun, FaMoon} from 'react-icons/fa'
+import Logo from "./components/Logo.jsx";
 import FormContainer from "./components/FormContainer.jsx";
+import './styles/App.css'
 
 function App(){
 
@@ -17,10 +19,16 @@ function App(){
 
     const[theme, setTheme] = useState('dark-theme')
     return (
-        <div className = {theme}>
-            <h1>FitLife</h1>
-            <button onClick = {toggleTheme}>{theme === "dark-theme" ? <FaSun/> : <FaMoon/>}</button>
-            <FormContainer/>
+        <div className={`app-container ${theme}`}>
+            <div className="app-header">
+                <Logo />
+                <button className="theme-toggle" onClick={toggleTheme}>
+                    {theme === "dark-theme" ? <FaSun/> : <FaMoon/>}
+                </button>
+            </div>
+            <main className="app-main">
+                <FormContainer/>
+            </main>
         </div>
     )
 }

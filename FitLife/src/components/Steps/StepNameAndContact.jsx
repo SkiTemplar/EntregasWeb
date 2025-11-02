@@ -23,12 +23,13 @@ function StepNameAndContact({ proceedNext, initialData = {}, setCanNext, setStep
     }, [handleSubmit, onSubmit, setSubmitCurrentStep]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <h2> Datos de Información </h2>
-            <div>
-                <label htmlFor="name">Nombre Completo:</label>
+        <form className="step-form" onSubmit={handleSubmit(onSubmit)}>
+            <h2 className="step-title">Datos de Información</h2>
+            <div className="form-group">
+                <label htmlFor="name" className="form-label">Nombre Completo:</label>
                 <input
                     id="name"
+                    className={`form-input ${errors.name ? 'error' : ''}`}
                     {...register("name", {
                         required: "El nombre es obligatorio",
                         minLength: {value: 3, message: "El nombre debe tener al menos 3 caracteres"}
@@ -36,12 +37,13 @@ function StepNameAndContact({ proceedNext, initialData = {}, setCanNext, setStep
                     placeholder="Nombre y Apellido"
                     autoComplete= "name"
                 />
-                {errors.name && <p>{errors.name.message}</p>}
+                {errors.name && <p className="error-message">{errors.name.message}</p>}
             </div>
-            <div>
-                <label htmlFor="email">Email</label>
+            <div className="form-group">
+                <label htmlFor="email" className="form-label">Email</label>
                 <input
                     id="email"
+                    className={`form-input ${errors.email ? 'error' : ''}`}
                     {...register("email", {
                         required: "El email es obligatorio",
                         pattern: {
@@ -53,12 +55,13 @@ function StepNameAndContact({ proceedNext, initialData = {}, setCanNext, setStep
                     autoComplete="email"
                     inputMode="email"
                 />
-                {errors.email && <p>{errors.email.message}</p>}
+                {errors.email && <p className="error-message">{errors.email.message}</p>}
             </div>
-            <div>
-                <label htmlFor="phone">Teléfono</label>
+            <div className="form-group">
+                <label htmlFor="phone" className="form-label">Teléfono</label>
                 <input
-                    id="email"
+                    id="phone"
+                    className={`form-input ${errors.phone ? 'error' : ''}`}
                     {...register("phone", {
                         required: "El teléfono es obligatorio",
                         pattern: {
@@ -70,7 +73,7 @@ function StepNameAndContact({ proceedNext, initialData = {}, setCanNext, setStep
                     autoComplete="phone"
                     inputMode= "tel"
                 />
-                {errors.phone && <p>{errors.phone.message}</p>}
+                {errors.phone && <p className="error-message">{errors.phone.message}</p>}
             </div>
         </form>
     )

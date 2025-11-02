@@ -23,12 +23,13 @@ function StepAddress({ proceedNext, initialData = {}, setCanNext, setStepData, s
     }, [handleSubmit, onSubmit, setSubmitCurrentStep]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>Detalles de Domicilio</h2>
-            <div>
-                <label htmlFor="address">Dirección</label>
+        <form className="step-form" onSubmit={handleSubmit(onSubmit)}>
+            <h2 className="step-title">Paso 2: Detalles de Domicilio</h2>
+            <div className="form-group">
+                <label htmlFor="address" className="form-label">Dirección</label>
                 <input
                     id="address"
+                    className={`form-input ${errors.address ? 'error' : ''}`}
                     {...register("address", {
                         required: "La dirección es obligatoria",
                         minLength: {value: 5, message: "La dirección debe tener al menos 5 caracteres"}
@@ -36,12 +37,13 @@ function StepAddress({ proceedNext, initialData = {}, setCanNext, setStepData, s
                     placeholder="Calle Principal 123"
                     autoComplete="address"
                 />
-                {errors.address && <p>{errors.address.message}</p>}
+                {errors.address && <p className="error-message">{errors.address.message}</p>}
             </div>
-            <div>
-                <label htmlFor="city">Ciudad</label>
+            <div className="form-group">
+                <label htmlFor="city" className="form-label">Ciudad</label>
                 <input
                     id="city"
+                    className={`form-input ${errors.city ? 'error' : ''}`}
                     {...register("city", {
                         required: "La ciudad es obligatoria",
                         minLength: {value: 3, message: "La ciudad debe tener al menos 3 caracteres"}
@@ -50,12 +52,13 @@ function StepAddress({ proceedNext, initialData = {}, setCanNext, setStepData, s
                     placeholder="Madrid"
                     autoComplete="city"
                 />
-                {errors.city && <p>{errors.city.message}</p>}
+                {errors.city && <p className="error-message">{errors.city.message}</p>}
             </div>
-            <div>
-                <label htmlFor="postalcode">Código Postal</label>
+            <div className="form-group">
+                <label htmlFor="postalcode" className="form-label">Código Postal</label>
                 <input
                     id="postalcode"
+                    className={`form-input ${errors.postalCode ? 'error' : ''}`}
                     {...register("postalCode", {
                         required: "El código postal es obligatorio",
                         pattern: {
@@ -66,7 +69,7 @@ function StepAddress({ proceedNext, initialData = {}, setCanNext, setStepData, s
                     placeholder="28000"
                     autoComplete="postal-code"
                 />
-                {errors.postalCode && <p>{errors.postalCode.message}</p>}
+                {errors.postalCode && <p className="error-message">{errors.postalCode.message}</p>}
             </div>
         </form>
     )

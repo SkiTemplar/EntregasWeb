@@ -33,7 +33,7 @@ function FormContainer(){
     const proceedNext = () => {
         if (currentStepIndex < totalSteps - 1) enterStep(currentStepIndex + 1);
     }
-
+    
     const onNext = () => {
         if(submitCurrentStep) submitCurrentStep();
     }
@@ -53,15 +53,18 @@ function FormContainer(){
     const initialData = formData[key] || {};
 
     return (
-        <>
-            <Comp
-                initialData={initialData}
-                setCanNext={setCanNext}
-                setStepData={(data) => setStepData(key, data)}
-                setSubmitCurrentStep={setSubmitCurrentStep}
-                proceedNext={proceedNext}
-                onBack={onBack}
-            />
+        <div className="form-container">
+            <div className="form-content">
+                <Comp
+                    initialData={initialData}
+                    setCanNext={setCanNext}
+                    setStepData={(data) => setStepData(key, data)}
+                    setSubmitCurrentStep={setSubmitCurrentStep}
+                    proceedNext={proceedNext}
+                    onBack={onBack}
+                    formData={formData}
+                />
+            </div>
 
             {currentStepIndex < totalSteps - 1 && (
                 <Navigation
@@ -72,7 +75,7 @@ function FormContainer(){
                     canNext={canNext}
                 />
             )}
-        </>
+        </div>
     )
 }
 

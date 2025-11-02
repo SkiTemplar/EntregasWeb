@@ -51,47 +51,49 @@ function StepTraining({ proceedNext, initialData = {}, setCanNext, setStepData, 
     }, [handleSubmit, onSubmit, setSubmitCurrentStep]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <h2> Preferencias de Entrenamiento </h2>
-            <div>
-                <label htmlFor="trainingType">Tipo de Entrenamiento:</label>
-                <select id="trainingType" {...register("trainingType", { required: "El tipo de entrenamiento es obligatorio" })}>
+        <form className="step-form" onSubmit={handleSubmit(onSubmit)}>
+            <h2 className="step-title">Paso 3: Preferencias de Entrenamiento</h2>
+            <div className="form-group">
+                <label htmlFor="trainingType" className="form-label">Tipo de Entrenamiento:</label>
+                <select
+                    id="trainingType"
+                    className={`form-input ${errors.trainingType ? 'error' : ''}`}
+                    {...register("trainingType", { required: "El tipo de entrenamiento es obligatorio" })}
+                >
                     <option value="">Seleccione una opción</option>
                     {TRAINING_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
-                {errors.trainingType && <p>{errors.trainingType.message}</p>}
+                {errors.trainingType && <p className="error-message">{errors.trainingType.message}</p>}
             </div>
-            <div>
-                <label htmlFor="objective">Objetivo Principal:</label>
-                <select id="objective" {...register("objective", { required: "El objetivo es obligatorio" })}>
+            <div className="form-group">
+                <label htmlFor="goal" className="form-label">Objetivo Principal:</label>
+                <select
+                    id="goal"
+                    className={`form-input ${errors.goal ? 'error' : ''}`}
+                    {...register("goal", { required: "El objetivo es obligatorio" })}
+                >
                     <option value="">Seleccione una opción</option>
                     {OBJECTIVE_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
-                {errors.objective && <p>{errors.objective.message}</p>}
+                {errors.goal && <p className="error-message">{errors.goal.message}</p>}
             </div>
-            <div>
-                <label htmlFor="availability">Disponibilidad Semanal:</label>
-                <select id="availability" {...register("availability", { required: "La disponibilidad es obligatoria" })}>
+            <div className="form-group">
+                <label htmlFor="availability" className="form-label">Disponibilidad Semanal:</label>
+                <select
+                    id="availability"
+                    className={`form-input ${errors.availability ? 'error' : ''}`}
+                    {...register("availability", { required: "La disponibilidad es obligatoria" })}
+                >
                     <option value="">Seleccione una opción</option>
                     {AVAILABILITY_OPTIONS.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
-                {errors.availability && <p>{errors.availability.message}</p>}
-            </div>
-            <div>
-                <label htmlFor="intensity">Nivel de Intensidad Preferido:</label>
-                <select id="intensity" {...register("intensity", { required: "El nivel de intensidad es obligatorio" })}>
-                    <option value="">Seleccione una opción</option>
-                    {INTENSITY_OPTIONS.map(option => (
-                        <option key={option.value} value={option.value}>{option.label}</option>
-                    ))}
-                </select>
-                {errors.intensity && <p>{errors.intensity.message}</p>}
+                {errors.availability && <p className="error-message">{errors.availability.message}</p>}
             </div>
         </form>
     );
