@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.box {
+  position: relative;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 0, 255, 0.4);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  backdrop-filter: blur(12px);
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+/* Animación de escáner vertical */
+.box::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(255, 0, 255, 0.3),
+    transparent
+  );
+  animation: scan 3s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: -100%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.box:hover {
+  transform: scale(1.02);
+  border-color: var(--secondary);
+  box-shadow: 0 20px 50px rgba(255, 0, 255, 0.3);
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  font-size: 3rem;
+  margin: 0 0 2rem 0;
+  padding: 0;
+  text-align: center;
+  filter: drop-shadow(0 5px 15px rgba(255, 0, 255, 0.4));
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  font-size: 1.3rem;
+  line-height: 1.8;
+  text-align: center;
+  opacity: 0.9;
+}
+

@@ -11,9 +11,22 @@ function StepConfirmation({ formData, onBack }) {
 
     // Función para enviar los datos finales
     const handleConfirm = () => {
-        console.log("Datos finales del registro:", formData);
-        alert("¡Registro completado con éxito!");
-        // Aquí iría la petición HTTP al servidor
+
+        fetch('https://api.fitlife.com/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert("¡Registro completado con éxito!");
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert("Hubo un error al completar el registro.");
+        });
+
     };
 
     return (

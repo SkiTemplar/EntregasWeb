@@ -1,0 +1,166 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 4rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 25px;
+  padding: 3.5rem 3rem;
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+/* Efecto de ondas al hover */
+.wrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 255, 0.2) 0%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  pointer-events: none;
+}
+
+.wrapper:hover::before {
+  width: 600px;
+  height: 600px;
+}
+
+.wrapper:hover {
+  transform: translateY(-15px) scale(1.01);
+  border-color: var(--primary);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  font-size: 3.5rem;
+  margin: 0 0 2.5rem 0;
+  padding: 0;
+  text-align: center;
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    var(--secondary) 50%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: slideGradient 3s ease infinite;
+}
+
+@keyframes slideGradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.list {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.listItem {
+  position: relative;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 255, 255, 0.05) 0%,
+    rgba(255, 0, 255, 0.05) 100%
+  );
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Línea superior animada */
+.listItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+  transition: width 0.4s ease;
+}
+
+.listItem:hover::before {
+  width: 100%;
+}
+
+/* Borde lateral que crece */
+.listItem::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.3s ease;
+}
+
+.listItem:hover::after {
+  height: 100%;
+}
+
+.listItem:hover {
+  transform: translateX(15px);
+  background: rgba(0, 255, 255, 0.1);
+  border-color: var(--primary);
+  padding-left: 2.5rem;
+}
+
+/* Diferentes colores de acento por item */
+.listItem:nth-child(1):hover {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), transparent);
+}
+
+.listItem:nth-child(2):hover {
+  background: linear-gradient(135deg, rgba(255, 0, 255, 0.15), transparent);
+}
+
+.listItem:nth-child(3):hover {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), transparent);
+}
+

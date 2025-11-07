@@ -1,0 +1,347 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050505;
+  --foreground: #ffffff;
+  --primary: #00ffff;
+  --secondary: #ff00ff;
+  --accent: #ffd700;
+  --card-bg: rgba(10, 10, 15, 0.9);
+  --border: rgba(0, 255, 255, 0.4);
+  --glow: rgba(0, 255, 255, 0.6);
+  --shadow: rgba(0, 0, 0, 0.8);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --primary: #00cccc;
+    --secondary: #cc00cc;
+    --accent: #ffaa00;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --border: rgba(0, 204, 204, 0.3);
+    --glow: rgba(0, 204, 204, 0.4);
+    --shadow: rgba(0, 0, 0, 0.15);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--background);
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(0, 255, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(255, 0, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1rem 0;
+  padding: 0;
+  font-weight: 700;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px var(--glow);
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  margin: 0 0 1rem 0;
+  padding: 0;
+  color: var(--foreground);
+  opacity: 0.95;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul li {
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--card-bg);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+ul li:hover {
+  border-left-color: var(--accent);
+  transform: translateX(5px);
+  box-shadow: 0 5px 20px var(--glow);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px var(--glow);
+}
+
+a:hover {
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--glow);
+}
+
+button {
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem 0;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: #000;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px var(--glow);
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 40px var(--glow), 0 0 30px var(--primary);
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+input, textarea {
+  padding: 0.875rem 1rem;
+  margin: 0.5rem 0;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  color: var(--foreground);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 25px var(--glow);
+}
+
+/* Grid system */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.grid > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 5px 20px var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.grid > div::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    transparent,
+    var(--primary),
+    transparent 30%
+  );
+  animation: rotate 4s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.grid > div:hover::before {
+  opacity: 0.2;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.grid > div:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: var(--primary);
+  box-shadow:
+    0 20px 60px var(--shadow),
+    0 0 40px var(--glow),
+    inset 0 0 30px rgba(0, 255, 255, 0.1);
+}
+
+.grid > div h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-shadow: 0 0 15px var(--glow);
+}
+
+.grid > div p {
+  flex-grow: 1;
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.grid > div button {
+  align-self: stretch;
+  margin-top: auto;
+}
+
+/* Navbar styling */
+nav {
+  backdrop-filter: blur(20px);
+  background: var(--card-bg) !important;
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 5px 30px var(--shadow), 0 0 20px var(--glow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  position: relative;
+  font-weight: 700;
+  padding: 0.5rem 0;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+nav a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+nav a:hover::before {
+  width: 100%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--secondary), var(--accent));
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 20px var(--primary);
+}
+
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: #000;
+}
+
+/* Section spacing */
+section {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container básico para páginas simples */
+div {
+  transition: all 0.3s ease;
+}
+
+body > div {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
