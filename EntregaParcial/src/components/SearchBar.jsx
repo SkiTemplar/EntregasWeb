@@ -1,29 +1,22 @@
 import { useState } from 'react';
 
-// Componente barra de búsqueda
-function SearchBar({ onSearch }) {
-  const [query, setQuery] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (query.trim()) {
-      onSearch(query);
-    }
+// Componente barra de búsqueda con búsqueda en tiempo real
+function SearchBar({ onSearch, searchQuery }) {
+  const handleChange = (e) => {
+    onSearch(e.target.value);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="search-bar">
+    <div className="search-bar">
       <input
         type="text"
-        placeholder="Buscar series..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Buscar series en tiempo real..."
+        value={searchQuery}
+        onChange={handleChange}
         className="search-input"
       />
-      <button type="submit" className="search-btn">Buscar</button>
-    </form>
+    </div>
   );
 }
 
 export default SearchBar;
-

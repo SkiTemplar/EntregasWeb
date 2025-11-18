@@ -1,5 +1,13 @@
 // Componente tarjeta de serie
 function ShowCard({ show, onShowDetail, onToggleFavorite, isFavorite }) {
+  // Manejar correctamente las imágenes
+  const getImageUrl = () => {
+    if (show.image) {
+      return show.image.medium || show.image.original || 'https://via.placeholder.com/210x295?text=No+Image';
+    }
+    return 'https://via.placeholder.com/210x295?text=No+Image';
+  };
+
   const handleImageError = (e) => {
     e.target.src = 'https://via.placeholder.com/210x295?text=No+Image';
   };
@@ -7,7 +15,7 @@ function ShowCard({ show, onShowDetail, onToggleFavorite, isFavorite }) {
   return (
     <div className="show-card">
       <img
-        src={show.image?.medium || 'https://via.placeholder.com/210x295?text=No+Image'}
+        src={getImageUrl()}
         alt={show.name}
         onClick={() => onShowDetail(show)}
         onError={handleImageError}
@@ -27,4 +35,3 @@ function ShowCard({ show, onShowDetail, onToggleFavorite, isFavorite }) {
 }
 
 export default ShowCard;
-

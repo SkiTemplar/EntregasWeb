@@ -10,6 +10,14 @@ function ShowModal({ show, onClose, onToggleFavorite, isFavorite }) {
     return tmp.textContent || tmp.innerText || '';
   };
 
+  // Obtener la mejor imagen disponible
+  const getImageUrl = () => {
+    if (show.image) {
+      return show.image.original || show.image.medium || 'https://via.placeholder.com/300x400?text=No+Image';
+    }
+    return 'https://via.placeholder.com/300x400?text=No+Image';
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -17,9 +25,10 @@ function ShowModal({ show, onClose, onToggleFavorite, isFavorite }) {
 
         <div className="modal-header">
           <img
-            src={show.image?.original || 'https://via.placeholder.com/300x400?text=No+Image'}
+            src={getImageUrl()}
             alt={show.name}
             className="modal-image"
+            onError={(e) => e.target.src = 'https://via.placeholder.com/300x400?text=No+Image'}
           />
           <div className="modal-info">
             <h2>{show.name}</h2>

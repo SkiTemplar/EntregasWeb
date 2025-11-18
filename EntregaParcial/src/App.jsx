@@ -6,44 +6,62 @@ import ShowModal from './components/ShowModal';
 import Favorites from './components/Favorites';
 import Filters from './components/Filters';
 import SortBar from './components/SortBar';
-import { getAllShows, searchShows, getShowById } from './api/api';
+import { getAllShows, getShowById } from './api/api';
+import useLocalStorage from './hook/useLocalStorage';
 
 function App() {
+  const [allShows, setAllShows] = useState([]); // Todas las series cargadas
   const [shows, setShows] = useState([]);
   const [filteredShows, setFilteredShows] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useLocalStorage('favorites', []);
   const [selectedShow, setSelectedShow] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [allGenres, setAllGenres] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Cargar favoritos desde localStorage al iniciar
+  // Cargar todas las series al inicio
   useEffect(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
-    }
+    const loadAllShows = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllShows();
+        setAllShows(data);
+        setShows(data);
+        setFilteredShows(data);
+      } catch (error) {
+        console.error('Error cargando series:', error);
+      }
+      setLoading(false);
+    };
+    loadAllShows();
   }, []);
-
-  // Guardar favoritos en localStorage cuando cambien
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
 
   // Extraer géneros únicos de las series
   useEffect(() => {
-    if (shows.length > 0) {
+    if (allShows.length > 0) {
       const genres = new Set();
-      shows.forEach((item) => {
-        const show = item.show || item;
+      allShows.forEach((show) => {
         if (show.genres) {
           show.genres.forEach((genre) => genres.add(genre));
         }
       });
       setAllGenres(Array.from(genres).sort());
     }
-  }, [shows]);
+  }, [allShows]);
+
+  // Búsqueda dinámica en tiempo real
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setShows(allShows);
+    } else {
+      const filtered = allShows.filter((show) =>
+        show.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setShows(filtered);
+    }
+  }, [searchQuery, allShows]);
 
   // Aplicar filtros y ordenamiento
   useEffect(() => {
@@ -51,8 +69,7 @@ function App() {
 
     // Filtrar por género
     if (selectedGenre) {
-      result = result.filter((item) => {
-        const show = item.show || item;
+      result = result.filter((show) => {
         return show.genres && show.genres.includes(selectedGenre);
       });
     }
@@ -60,10 +77,8 @@ function App() {
     // Ordenar por rating
     if (sortOrder) {
       result.sort((a, b) => {
-        const showA = a.show || a;
-        const showB = b.show || b;
-        const ratingA = showA.rating?.average || 0;
-        const ratingB = showB.rating?.average || 0;
+        const ratingA = a.rating?.average || 0;
+        const ratingB = b.rating?.average || 0;
         return sortOrder === 'asc' ? ratingA - ratingB : ratingB - ratingA;
       });
     }
@@ -71,17 +86,9 @@ function App() {
     setFilteredShows(result);
   }, [shows, selectedGenre, sortOrder]);
 
-  // Buscar series
-  const handleSearch = async (query) => {
-    setLoading(true);
-    try {
-      const results = await searchShows(query);
-      setShows(results);
-      setFilteredShows(results);
-    } catch (error) {
-      console.error('Error buscando series:', error);
-    }
-    setLoading(false);
+  // Actualizar búsqueda en tiempo real
+  const handleSearch = (query) => {
+    setSearchQuery(query);
   };
 
   // Mostrar detalle de serie
@@ -108,7 +115,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>TVMaze Series</h1>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} searchQuery={searchQuery} />
       </header>
 
       <main className="app-main">
@@ -118,7 +125,7 @@ function App() {
           onToggleFavorite={handleToggleFavorite}
         />
 
-        {shows.length > 0 && (
+        {allShows.length > 0 && (
           <div className="controls">
             <Filters
               genres={allGenres}
@@ -130,10 +137,10 @@ function App() {
         )}
 
         {loading ? (
-          <p className="loading">Cargando...</p>
+          <p className="loading">Cargando series...</p>
         ) : filteredShows.length > 0 ? (
           <div className="results-section">
-            <h2>Resultados ({filteredShows.length})</h2>
+            <h2>Series ({filteredShows.length})</h2>
             <ShowGrid
               shows={filteredShows}
               onShowDetail={handleShowDetail}
@@ -141,12 +148,12 @@ function App() {
               favorites={favorites}
             />
           </div>
-        ) : shows.length === 0 ? (
+        ) : (
           <div className="welcome">
-            <h2>Busca tus series favoritas</h2>
-            <p>Usa el buscador para encontrar series de TV</p>
+            <h2>No se encontraron series</h2>
+            <p>Intenta con otra búsqueda</p>
           </div>
-        ) : null}
+        )}
       </main>
 
       {selectedShow && (
