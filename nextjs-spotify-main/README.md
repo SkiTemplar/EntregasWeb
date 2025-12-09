@@ -1,4 +1,4 @@
- el D# 🎵 Spotify Taste Mixer - Proyecto Final
+# 🎵 Spotify Taste Mixer - Proyecto Final
 
 Aplicación web que genera playlists personalizadas de Spotify basándose en las preferencias musicales del usuario mediante widgets configurables.
 
