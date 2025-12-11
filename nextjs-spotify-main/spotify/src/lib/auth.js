@@ -25,7 +25,8 @@ export function getSpotifyAuthUrl() {
     'user-top-read',
     'playlist-read-private',
     'playlist-modify-public',
-    'playlist-modify-private'
+    'playlist-modify-private',
+    'user-library-read'
   ].join(' ');
 
   const params = new URLSearchParams({
@@ -76,4 +77,71 @@ export function logout() {
   localStorage.removeItem('spotify_token');
   localStorage.removeItem('spotify_refresh_token');
   localStorage.removeItem('spotify_token_expiration');
+}
+
+// Obtener refresh token
+export function getRefreshToken() {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('spotify_refresh_token');
+}
+
+// Refrescar token automáticamente
+export async function refreshAccessToken() {
+  const refreshToken = getRefreshToken();
+
+  if (!refreshToken) {
+    console.error('No refresh token available');
+    return null;
+  }
+
+  try {
+    const response = await fetch('/api/refresh-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to refresh token');
+    }
+
+    const data = await response.json();
+
+    // Guardar nuevo token
+    saveTokens(
+      data.access_token,
+      data.refresh_token || refreshToken, // Spotify puede o no devolver nuevo refresh_token
+      data.expires_in
+    );
+
+    return data.access_token;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    // Si falla el refresh, limpiar tokens y redirigir a login
+    logout();
+    return null;
+  }
+}
+
+// Obtener token válido (con refresh automático si expiró)
+export async function getValidAccessToken() {
+  if (typeof window === 'undefined') return null;
+
+  const token = localStorage.getItem('spotify_token');
+  const expiration = localStorage.getItem('spotify_token_expiration');
+
+  if (!token || !expiration) return null;
+
+  // Si el token expira en menos de 5 minutos, refrescarlo
+  const expirationTime = parseInt(expiration);
+  const fiveMinutes = 5 * 60 * 1000;
+
+  if (Date.now() > expirationTime - fiveMinutes) {
+    console.log('Token expired or expiring soon, refreshing...');
+    return await refreshAccessToken();
+  }
+
+  return token;
 }

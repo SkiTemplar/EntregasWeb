@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { isAuthenticated, logout, getAccessToken } from '@/lib/auth';
+import { isAuthenticated, logout, getValidAccessToken } from '@/lib/auth';
 import Header from '@/components/Header';
 import ArtistWidget from '@/components/widgets/ArtistWidget';
 import GenreWidget from '@/components/widgets/GenreWidget';
 import PopularityWidget from '@/components/widgets/PopularityWidget';
 import DecadeWidget from '@/components/widgets/DecadeWidget';
 import MoodWidget from '@/components/widgets/MoodWidget';
+import TrackSearchWidget from '@/components/widgets/TrackSearchWidget';
 import PlaylistDisplay from '@/components/PlaylistDisplay';
 import FavoritesSection from '@/components/FavoritesSection';
 import ImportPlaylist from '@/components/ImportPlaylist';
@@ -57,7 +58,7 @@ export default function Dashboard() {
     for (const artist of selectedArtists) {
       try {
         const res = await fetch(
-          `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=ES`,
+          `https://api.spotify.com/v1/artists/${artist.id}/top-tracks`,
           { headers: { 'Authorization': `Bearer ${token}` } }
         );
         const data = await res.json();
@@ -90,8 +91,23 @@ export default function Dashboard() {
       } catch (e) { console.error(e); }
     }
 
-    // 4. Si no hay selecciones específicas, usar top tracks del usuario
-    if (selectedArtists.length === 0 && selectedGenres.length === 0 && selectedDecades.length === 0) {
+    // 4. Buscar por mood usando keywords y playlists temáticas
+    for (const mood of selectedMoods) {
+      try {
+        // Buscar tracks con keywords relacionadas al mood
+        for (const keyword of mood.keywords) {
+          const res = await fetch(
+            `https://api.spotify.com/v1/search?type=track&q=${encodeURIComponent(keyword)}&limit=10`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+          );
+          const data = await res.json();
+          if (data.tracks?.items) allTracks.push(...data.tracks.items);
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    // 5. Si no hay selecciones específicas, usar top tracks del usuario
+    if (selectedArtists.length === 0 && selectedGenres.length === 0 && selectedDecades.length === 0 && selectedMoods.length === 0) {
       try {
         const res = await fetch(
           `https://api.spotify.com/v1/me/top/tracks?limit=${limit}`,
@@ -107,25 +123,25 @@ export default function Dashboard() {
       t => t.popularity >= popularityCategory.range[0] && t.popularity <= popularityCategory.range[1]
     );
 
-    // Filtrar por mood (si está seleccionado)
-    // Nota: La API de búsqueda no soporta filtros de audio features directamente
-    // En una implementación completa, necesitarías hacer peticiones adicionales
-    // a /audio-features para filtrar por mood
-
     // Eliminar duplicados
     return [...new Map(allTracks.map(t => [t.id, t])).values()];
   };
 
   // Generar playlist
   const generatePlaylist = async () => {
-    if (selectedArtists.length === 0 && selectedGenres.length === 0 && selectedDecades.length === 0) {
-      alert('Selecciona al menos un artista, género o década');
+    if (selectedArtists.length === 0 && selectedGenres.length === 0 && selectedDecades.length === 0 && selectedMoods.length === 0) {
+      alert('Selecciona al menos un artista, género, década o mood');
       return;
     }
 
     setLoading(true);
     try {
-      const token = getAccessToken();
+      // Usar getValidAccessToken para refresh automático
+      const token = await getValidAccessToken();
+      if (!token) {
+        router.replace('/');
+        return;
+      }
       const tracks = await fetchTracks(token, 50);
       const shuffled = tracks.sort(() => Math.random() - 0.5);
       setPlaylist(shuffled.slice(0, songCount));
@@ -142,7 +158,12 @@ export default function Dashboard() {
 
     setLoading(true);
     try {
-      const token = getAccessToken();
+      // Usar getValidAccessToken para refresh automático
+      const token = await getValidAccessToken();
+      if (!token) {
+        router.replace('/');
+        return;
+      }
       const tracks = await fetchTracks(token, 50);
       // Excluir tracks actuales para obtener canciones diferentes
       const currentIds = new Set(playlist.map(t => t.id));
@@ -162,7 +183,12 @@ export default function Dashboard() {
 
     setLoading(true);
     try {
-      const token = getAccessToken();
+      // Usar getValidAccessToken para refresh automático
+      const token = await getValidAccessToken();
+      if (!token) {
+        router.replace('/');
+        return;
+      }
       const tracks = await fetchTracks(token, 50);
       const existingIds = new Set(playlist.map(t => t.id));
       const newTracks = tracks.filter(t => !existingIds.has(t.id));
@@ -177,7 +203,12 @@ export default function Dashboard() {
   // Guardar playlist en Spotify
   const savePlaylistToSpotify = async (name) => {
     setSaving(true);
-    const token = getAccessToken();
+    // Usar getValidAccessToken para refresh automático
+    const token = await getValidAccessToken();
+    if (!token) {
+      router.replace('/');
+      return;
+    }
 
     try {
       // 1. Obtener usuario
@@ -236,6 +267,17 @@ export default function Dashboard() {
     setPlaylist(prev => prev.filter(t => t.id !== trackId));
   };
 
+  // Añadir track individual a la playlist
+  const addTrackToPlaylist = (track) => {
+    setPlaylist(prev => {
+      // Evitar duplicados
+      if (prev.some(t => t.id === track.id)) {
+        return prev;
+      }
+      return [...prev, track];
+    });
+  };
+
   const toggleFavorite = (track) => {
     const exists = favorites.find(f => f.id === track.id);
     const updated = exists
@@ -281,6 +323,7 @@ export default function Dashboard() {
           <PopularityWidget selectedCategory={popularityCategory} onSelect={setPopularityCategory} />
           <DecadeWidget selectedDecades={selectedDecades} onSelect={setSelectedDecades} />
           <MoodWidget selectedMoods={selectedMoods} onSelect={setSelectedMoods} />
+          <TrackSearchWidget onAddTrack={addTrackToPlaylist} playlist={playlist} />
         </div>
 
         {/* Generar Playlist */}
