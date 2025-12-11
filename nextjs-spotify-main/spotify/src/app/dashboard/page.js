@@ -15,6 +15,9 @@ import FavoritesSection from '@/components/FavoritesSection';
 import ImportPlaylist from '@/components/ImportPlaylist';
 import SavePlaylistModal from '@/components/SavePlaylistModal';
 
+// Clave para localStorage de preferencias
+const PREFERENCES_KEY = 'spotify_widget_preferences';
+
 export default function Dashboard() {
   const router = useRouter();
   const [selectedArtists, setSelectedArtists] = useState([]);
@@ -30,6 +33,7 @@ export default function Dashboard() {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  // Cargar preferencias guardadas y favoritos al iniciar
   useEffect(() => {
     if (!isAuthenticated()) {
       router.replace('/');
@@ -38,17 +42,52 @@ export default function Dashboard() {
 
     // Cargar favoritos desde localStorage
     try {
-      const saved = localStorage.getItem('favorite_tracks');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setFavorites(parsed);
+      const savedFavorites = localStorage.getItem('favorite_tracks');
+      if (savedFavorites) {
+        setFavorites(JSON.parse(savedFavorites));
       }
     } catch (error) {
       console.error('Error loading favorites:', error);
     }
 
+    // Cargar preferencias de widgets desde localStorage
+    try {
+      const savedPreferences = localStorage.getItem(PREFERENCES_KEY);
+      if (savedPreferences) {
+        const prefs = JSON.parse(savedPreferences);
+        if (prefs.selectedArtists) setSelectedArtists(prefs.selectedArtists);
+        if (prefs.selectedGenres) setSelectedGenres(prefs.selectedGenres);
+        if (prefs.popularityCategory) setPopularityCategory(prefs.popularityCategory);
+        if (prefs.selectedDecades) setSelectedDecades(prefs.selectedDecades);
+        if (prefs.selectedMoods) setSelectedMoods(prefs.selectedMoods);
+        if (prefs.songCount) setSongCount(prefs.songCount);
+      }
+    } catch (error) {
+      console.error('Error loading preferences:', error);
+    }
+
     setIsReady(true);
   }, [router]);
+
+  // Guardar preferencias cuando cambien
+  useEffect(() => {
+    if (!isReady) return; // No guardar durante la carga inicial
+
+    const preferences = {
+      selectedArtists,
+      selectedGenres,
+      popularityCategory,
+      selectedDecades,
+      selectedMoods,
+      songCount
+    };
+
+    try {
+      localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+    }
+  }, [selectedArtists, selectedGenres, popularityCategory, selectedDecades, selectedMoods, songCount, isReady]);
 
   // Buscar tracks con todos los filtros
   const fetchTracks = async (token, limit = 20) => {
