@@ -218,7 +218,7 @@ export default function Dashboard() {
 
   // Agregar mas canciones
   const addMoreSongs = async () => {
-    if (selectedArtists.length === 0 && selectedGenres.length === 0 && selectedDecades.length === 0) return;
+    if (selectedArtists.length === 0 && selectedGenres.length === 0 && selectedDecades.length === 0 && selectedMoods.length === 0) return;
 
     setLoading(true);
     try {
