@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FiSearch, FiPlus, FiX } from 'react-icons/fi';
 import { FaMusic } from 'react-icons/fa';
 import { getAccessToken } from '@/lib/auth';
@@ -9,6 +9,7 @@ export default function TrackSearchWidget({ onAddTrack, playlist }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const debounceTimer = useRef(null);
 
   const searchTracks = async (searchQuery) => {
     if (!searchQuery.trim()) {
@@ -33,12 +34,14 @@ export default function TrackSearchWidget({ onAddTrack, playlist }) {
   };
 
   // Debounce para la búsqueda
-  let debounceTimer;
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => searchTracks(value), 300);
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+    debounceTimer.current = setTimeout(() => searchTracks(value), 300);
   };
 
   const addTrack = (track) => {

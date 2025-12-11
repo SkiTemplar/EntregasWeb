@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { getAccessToken } from '@/lib/auth';
 import { FiSearch, FiX } from 'react-icons/fi';
 import { FaUser } from 'react-icons/fa';
@@ -9,6 +9,7 @@ export default function ArtistWidget({ selectedArtists, onSelect }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const debounceTimer = useRef(null);
 
   const searchArtists = async (searchQuery) => {
     if (!searchQuery.trim()) {
@@ -32,12 +33,14 @@ export default function ArtistWidget({ selectedArtists, onSelect }) {
     setLoading(false);
   };
 
-  let debounceTimer;
   const handleSearch = (e) => {
     const value = e.target.value;
     setQuery(value);
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => searchArtists(value), 300);
+
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+    debounceTimer.current = setTimeout(() => searchArtists(value), 300);
   };
 
   const addArtist = (artist) => {
