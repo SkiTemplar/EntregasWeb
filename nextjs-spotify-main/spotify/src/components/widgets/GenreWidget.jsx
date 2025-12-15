@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { FiMusic, FiX } from 'react-icons/fi';
 
-// Generos predefinidos (ya que el endpoint esta deprecado en algunas regiones)
+
 const GENRES = [
   'pop', 'rock', 'hip-hop', 'electronic', 'jazz', 'classical',
   'r-n-b', 'country', 'reggaeton', 'metal', 'indie', 'folk',
